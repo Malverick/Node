@@ -1,4 +1,3 @@
-
 var express = require("express");
 var Seq = require("sequelize");
 var app = express();
