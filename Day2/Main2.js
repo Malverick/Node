@@ -1,7 +1,11 @@
 var express = require("express");
+const cors = require('cors');
 var Seq = require("sequelize");
 var app = express();
 //var itemRouter = require('./Router2');
+
+//cors stops the blocking of certain requests, and fixes certain errors in the browser
+app.use(cors())
 
 app.listen(8765, () => {
     console.log("Always watching.")
@@ -36,18 +40,25 @@ sequelize
 
 
 const Item = sequelize.define('item', {
+    item_id: {
+        type: Seq.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     item: {
         type: Seq.STRING
     },
     price: {
         type: Seq.INTEGER
     }
+}, { timestamps: false });
+Item.removeAttribute('id');
+
+Item.sync({ force: true }).then(() => {
+    //Creates a new item every time the code is run.
+    Item.create({ item: "phone", price: 132 });
 });
 
-Item.sync();
-
-//Creates a new item every time the code is run.
-//Item.create( {item: "phone", price: 125} );
 
 //Adds to the table
 //Keeps URL clean, passes things in via JSON
@@ -112,4 +123,15 @@ app.put('/update/:index/:updated', (req, res) => {
 //     const x = await Item.findAll()
 //     res.send(x)
 // });
-    //app.
+//app.
+
+//Error handling has to be at the bottom
+app.get('/break-stuff', (req, res, next) => {
+    next('oh no');
+});
+app.use((err, req, res, next) => {
+    res.status(500).send({
+        error: "Something went wrong",
+        message: err
+    });
+});
