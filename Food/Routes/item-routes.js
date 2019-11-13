@@ -2,16 +2,16 @@ var express = require("express");
 const models = require('../Models')
 var router = express.Router();
 
-//Table1                                                        Table1
+//Recipe                                                        Recipe
 router.get('/getThing1/:id?', async (req, res) => {
     try {
         if (req.params.id == undefined) {
-            res.send(await models.table1.findAll())
+            res.send(await models.Recipe.findAll())
         }
         else {
-            var resp = await models.table1.findAll({
+            var resp = await models.Recipe.findAll({
                 where: {
-                    t1_id: req.params.id
+                    recipe_id: req.params.id
                 }
             })
             res.send(resp)
@@ -23,25 +23,25 @@ router.get('/getThing1/:id?', async (req, res) => {
 });
 router.post('/addThing1', async (req, res) => {
     try {
-        await models.table1.create({ item: req.body.item, price: req.body.price });
+        await models.Recipe.create({ name: req.body.name, price: req.body.price });
         res.send("probably worked")
     }
     catch{
         res.status(500).send('Failed to \'post\'');
     }
 });
-router.delete('/deleteThing1/:item', async (req, res) => {
+router.delete('/deleteThing1/:name', async (req, res) => {
     try {
-        await models.table1.destroy({ where: { item: req.params.item } });
+        await models.Recipe.destroy({ where: { name: req.params.name } });
         res.send('probably worked')
     }
     catch{
         res.status(500).send('Failed to \'delete\'');
     }
 });
-router.put('/updateThing1/:item', (req, res) => {
+router.put('/updateThing1/:name', (req, res) => {
     try {
-        models.table1.update({ item: req.body.item }, { where: { item: req.params.item } });
+        models.Recipe.update({ name: req.body.name }, { where: { name: req.params.name } });
         res.send('probably worked')
     }
     catch{
@@ -49,16 +49,16 @@ router.put('/updateThing1/:item', (req, res) => {
     }
 });
 
-//Table2                                                        Table2
+//Ingredient                                                        Ingredient
 router.get('/getThing2/:id?', async (req, res) => {
     try {
         if (req.params.id == undefined) {
-            res.send(await models.table2.findAll())
+            res.send(await models.Ingredient.findAll())
         }
         else {
-            var resp = await models.table2.findAll({
+            var resp = await models.Ingredient.findAll({
                 where: {
-                    t2_id: req.params.id
+                    ingredient_id: req.params.id
                 }
             })
             res.send(resp)
@@ -70,25 +70,25 @@ router.get('/getThing2/:id?', async (req, res) => {
 });
 router.post('/addThing2', async (req, res) => {
     try {
-        await models.table2.create({ item: req.body.item, price: req.body.price });
+        await models.Ingredient.create({ name: req.body.name, price: req.body.price });
         res.send("probably worked")
     }
     catch{
         res.status(500).send('Failed to \'post\'');
     }
 });
-router.delete('/deleteThing2/:item', async (req, res) => {
+router.delete('/deleteThing2/:name', async (req, res) => {
     try {
-        await models.table2.destroy({ where: { item: req.params.item } });
+        await models.Ingredient.destroy({ where: { name: req.params.name } });
         res.send('probably worked')
     }
     catch{
         res.status(500).send('Failed to \'delete\'');
     }
 });
-router.put('/updateThing2/:item', (req, res) => {
+router.put('/updateThing2/:name', (req, res) => {
     try {
-        models.table2.update({ item: req.body.item }, { where: { item: req.params.item } });
+        models.Ingredient.update({ name: req.body.name }, { where: { name: req.params.name } });
         res.send('probably worked')
     }
     catch{
